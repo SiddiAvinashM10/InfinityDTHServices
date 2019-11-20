@@ -14,7 +14,10 @@ public class DatabaseUtility {
 		{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","tcs12345");
-			return con;
+			if(con != null)
+				return con;
+			else
+				System.out.println("Db connection failed");
 		} 
 		catch (Exception e) 
 		{	
@@ -26,9 +29,10 @@ public class DatabaseUtility {
 	public ResultSet readAll(Connection con,String userName, String dbName)
 	{
 		PreparedStatement stmt;
+		String query = "select * from "+dbName+" where emailId = ?";
 		try 
 		{
-			stmt = con.prepareStatement("select password, flag from "+dbName+" where emailId = ?");
+			stmt = con.prepareStatement(query);
 			stmt.setString(1, userName);
 			ResultSet rs = stmt.executeQuery();
 			if(rs != null)
@@ -46,9 +50,10 @@ public class DatabaseUtility {
 	public void updateFlag(Connection con, String userName, String dbName)
 	{
 		PreparedStatement stmt;
+		String query = "update "+dbName+ " set flag = ? where emailId = ?";
 		try 
 		{
-			stmt = con.prepareStatement("update "+dbName+ "set flag = ? where emailId = ?");
+			stmt = con.prepareStatement(query);
 			stmt.setInt(1, 1);
 			stmt.setString(2, userName);
 			int rs = stmt.executeUpdate();
@@ -71,9 +76,10 @@ public class DatabaseUtility {
 	public boolean updatePassword(Connection con, String userName, String password, String dbName)
 	{
 		PreparedStatement stmt;
+		String query = "update "+dbName+ " set pwd = ? where emailId = ?";
 		try 
 		{
-			stmt = con.prepareStatement("update "+dbName+ "set password = ? where emailId = ?");
+			stmt = con.prepareStatement(query);
 			stmt.setString(1, password);
 			stmt.setString(2, userName);
 			int rs = stmt.executeUpdate();
