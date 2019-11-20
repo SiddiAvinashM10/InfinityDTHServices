@@ -28,6 +28,7 @@ public class ControllerServlet extends HttpServlet {
 		Connection con = db.getDbConnection();
 		Logic l = new Logic();
 		String option = req.getParameter("option");
+		HttpSession session = req.getSession();
 		
 		switch(option)
 		{
@@ -42,31 +43,27 @@ public class ControllerServlet extends HttpServlet {
 					int flag = l.loginValidation(con, db, userName, password);
 					if(flag != -1)
 					{
-						HttpSession session = req.getSession();
+						
 						session.setAttribute("username", userName);
 						session.setAttribute("dbName", dbName);
 						
 						if(flag == 0)
 						{
-							db.updateOneFlag(con, userName, dbName);//dbName possibly redundant.
-							res.sendRedirect("passwordManagement.jsp");
+							db.updateFlag(con, userName, dbName);//dbName possibly redundant.
+							res.sendRedirect("changePassword.jsp");
 							//where to, after changing password????!!!
 						}
 						else
 						{
-							switch(dbName)
+							String jspName = l.switchDbToJsp(dbName);
+							if(jspName != null)
 							{
-								case "customerSchema":
-									res.sendRedirect("welcome.jsp");
-									break;
-								
-								case "operatorSchema":
-									//What page goes here??
-									break;
-									
-								case "adminSchema":
-									res.sendRedirect("admin.jsp");
-									break;
+								res.sendRedirect(jspName);
+							}
+							else
+							{
+								//Ideally should not reach here. Maybe we can remove it later.
+								System.out.println("Database not present.");
 							}
 						}
 					}
@@ -83,9 +80,30 @@ public class ControllerServlet extends HttpServlet {
 				}
 				break;
 				
-			case "passwordManagement":
-				
-				
+			case "changePassword":
+				//Possible error of trying to get attribute when its not set.
+				//Test Case idea: after you reach the change password page, go back on browser and see if it still works.
+				//You might need to add some response headers(Don't remember exactly). Learn this later.
+				String newPassword = req.getParameter("nPassword");
+				if(db.updatePassword(con, (String)session.getAttribute("userName"), newPassword, (String)session.getAttribute("dbName")))
+				{
+					//If success, do we need to send a message before we redirect to the respective pages???!!!
+					String jspName = l.switchDbToJsp((String)session.getAttribute("dbName"));
+					if(jspName != null)
+					{
+						res.sendRedirect(jspName);
+					}
+					else
+					{
+						//Ideally should not reach here. Maybe we can remove it later.
+						System.out.println("Database not present.");
+					}
+				}
+				else
+				{
+					//Fail condition will occur when there is an error with updating value in database. Otherwise ideally it should not.
+					res.sendRedirect("changePassword.jsp");
+				}
 				break;
 				
 			case "register":

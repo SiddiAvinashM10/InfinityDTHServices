@@ -40,6 +40,24 @@ public class Logic {
 		return null;
 	}
 	
+	public String switchDbToJsp(String dbName)
+	{
+		switch(dbName)
+		{
+			case "customerSchema":
+				return "welcome.jsp";
+
+			case "operatorSchema":
+				//What page goes here??
+				break;
+				
+			case "adminSchema":
+				return "admin.jsp";
+				
+		}
+		return null;
+	}
+	
 	public int loginValidation(Connection con, DatabaseUtility db, String userName, String password)
 	{
 		String dbName = getUserType(con, userName);
@@ -65,4 +83,6 @@ public class Logic {
 		
 		return -1;
 	}
+	
+	
 }
