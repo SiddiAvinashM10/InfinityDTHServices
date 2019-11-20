@@ -43,10 +43,9 @@ public class DatabaseUtility {
 		return null;
 	}
 	
-	public void updateOneFlag(Connection con, String userName, String dbName)
+	public void updateFlag(Connection con, String userName, String dbName)
 	{
 		PreparedStatement stmt;
-		
 		try 
 		{
 			stmt = con.prepareStatement("update "+dbName+ "set flag = ? where emailId = ?");
@@ -67,6 +66,30 @@ public class DatabaseUtility {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean updatePassword(Connection con, String userName, String password, String dbName)
+	{
+		PreparedStatement stmt;
+		try 
+		{
+			stmt = con.prepareStatement("update "+dbName+ "set password = ? where emailId = ?");
+			stmt.setString(1, password);
+			stmt.setString(2, userName);
+			int rs = stmt.executeUpdate();
+			//Will not need this string. Remove it later.
+			if(rs == 1)
+			{
+				System.out.println("Update Successfull");
+				return true;
+			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 		
+		System.out.println("Update Failed");
+		return false;
 	}
 }
