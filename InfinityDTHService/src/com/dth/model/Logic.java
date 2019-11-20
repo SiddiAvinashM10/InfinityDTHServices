@@ -10,13 +10,15 @@ public class Logic {
 	//Maybe this function should go in Database Utility. We can think of it as ReadOne. 
 	public String getUserType(Connection con, String userName)
 	{
+		String query = "select role from roleSchema where emailID=?";
 		try 
 		{
-			PreparedStatement stmt=con.prepareStatement("select role from roleSchema where emailId = ?");
-			stmt.setString(1, userName);
+			PreparedStatement stmt=con.prepareStatement(query);
+			stmt.setString(1,userName);
+			
 			ResultSet rs = stmt.executeQuery();
 			
-			if(rs != null)
+			if(rs.next())
 			{
 				if(rs.getString("role").equals("c"))
 				{
@@ -45,7 +47,7 @@ public class Logic {
 		switch(dbName)
 		{
 			case "customerSchema":
-				return "welcome.jsp";
+				return "success.jsp";
 
 			case "operatorSchema":
 				//What page goes here??
@@ -69,11 +71,11 @@ public class Logic {
 			
 			while(rs.next())
 			{
-				pwd = rs.getString("password");
-			}
-			if(pwd.equals(password))
-			{
-				return rs.getInt("flag");
+				pwd = rs.getString("pwd");
+				if(pwd.equals(password))
+				{
+					return rs.getInt("flag"); 
+				}
 			}
 		} 
 		catch (SQLException e) 
@@ -83,6 +85,4 @@ public class Logic {
 		
 		return -1;
 	}
-	
-	
 }

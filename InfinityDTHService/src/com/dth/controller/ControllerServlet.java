@@ -21,6 +21,10 @@ public class ControllerServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public ControllerServlet()
+	{
+		super();
+	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
@@ -44,9 +48,8 @@ public class ControllerServlet extends HttpServlet {
 					if(flag != -1)
 					{
 						
-						session.setAttribute("username", userName);
+						session.setAttribute("userName", userName);
 						session.setAttribute("dbName", dbName);
-						
 						if(flag == 0)
 						{
 							db.updateFlag(con, userName, dbName);//dbName possibly redundant.
@@ -85,6 +88,7 @@ public class ControllerServlet extends HttpServlet {
 				//Test Case idea: after you reach the change password page, go back on browser and see if it still works.
 				//You might need to add some response headers(Don't remember exactly). Learn this later.
 				String newPassword = req.getParameter("nPassword");
+
 				if(db.updatePassword(con, (String)session.getAttribute("userName"), newPassword, (String)session.getAttribute("dbName")))
 				{
 					//If success, do we need to send a message before we redirect to the respective pages???!!!
@@ -106,7 +110,7 @@ public class ControllerServlet extends HttpServlet {
 				}
 				break;
 				
-			case "register":
+			case "customerRegister":
 				
 				
 				break;
