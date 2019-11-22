@@ -3,6 +3,7 @@ package com.dth.controller;
 import java.io.IOException;
 import java.sql.Connection;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dth.model.Customer;
 import com.dth.model.DatabaseUtility;
 import com.dth.model.Logic;
 
@@ -34,6 +36,7 @@ public class ControllerServlet extends HttpServlet {
 		String option = req.getParameter("option");
 		HttpSession session = req.getSession();
 		
+		
 		switch(option)
 		{
 		//Switch between users.
@@ -54,7 +57,6 @@ public class ControllerServlet extends HttpServlet {
 						{
 							db.updateFlag(con, userName, dbName);//dbName possibly redundant.
 							res.sendRedirect("changePassword.jsp");
-							//where to, after changing password????!!!
 						}
 						else
 						{
@@ -73,6 +75,10 @@ public class ControllerServlet extends HttpServlet {
 					else
 					{
 						//if password is incorrect, it ends up here.
+//						session.invalidate();
+//						req.setAttribute("errorMessage", "Invalid Password");
+//						RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
+//						rd.forward(req, res);
 						res.sendRedirect("login.jsp");
 					}
 				}
@@ -110,10 +116,37 @@ public class ControllerServlet extends HttpServlet {
 				}
 				break;
 				
+			//maybe create a customer class, then we can just pass the object around as a parameter instead of all the variables seperately.
 			case "customerRegister":
-				
+				Customer c = new Customer();
+				c.setFirstname(req.getParameter("firstName"));
+				c.setLastName(req.getParameter("lastName"));
+				c.setEmailId(req.getParameter("emailId"));
+				c.setPhoneNumber(req.getParameter("phoneNumber"));
+				c.setAddress1(req.getParameter("address1"));
+				c.setAddress2(req.getParameter("address2"));
+				c.setLandmark(req.getParameter("landmark"));
+				c.setZipCode(Integer.parseInt(req.getParameter("zipCode")));
+				c.setCity(req.getParameter("city"));
+				c.setState(req.getParameter("state"));
+				c.setFlag(0);
+				c.setPwd("changePwd");
+				if(l.createCustomer(con, c))
+				{
+					res.sendRedirect("login.jsp");
+				}
+				else
+				{
+					System.out.println("Registration Failed");
+				}
 				
 				break;
+				
+			case "logout":
+				session.removeAttribute("userName");
+				session.removeAttribute("dbName");
+				session.invalidate();
+				res.sendRedirect("login.jsp");
 		}
 	}
 

@@ -15,6 +15,18 @@
 </head>
 <body>
 
+<%
+
+	response.setHeader("cache-control", "no-cache, no-store, must-revalidate"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+	response.setHeader("Expires", "0"); //Proxy
+	
+	if(session.getAttribute("userName") == null)
+	{
+		response.sendRedirect("login.jsp");
+	}
+%>
+
 	<!-- Title for Home Page -->
 
 
@@ -68,8 +80,12 @@
 
 
 				</div>
-				<br> <a href="login.jsp"><p class="text-center">Main
-						Login</p></a>
+				<br> 
+				<form action="<%=request.getContextPath()%>/ControllerServlet" method="post">
+					<!-- Hidden Input  -->
+					<input type="hidden" name="option" value="logout"/>
+					<input type="submit" value="logout">
+				</form>
 			</div>
 			<div class="col-md-2 col-sm"></div>
 

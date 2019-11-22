@@ -37,6 +37,7 @@
 									<div class="form-group">
 										<br>
 										<br>
+										
 										<br> <input type="email" name="userName" class="form-control"
 											id="inputEmail1"
 											aria-describedby="emailHelp"
@@ -49,6 +50,13 @@
 									<div class="form-group">
 										<input type="password" name="password" class="form-control"
 											id="inputPassword" placeholder="password" required>
+											
+									<%
+										if(request.getAttribute("errorMessage") != null)
+										{
+										out.println(request.getAttribute("errorMessage"));
+										}
+										%>
 									</div>
 									<button type="submit"
 										class="btn btn-info btn-block position button-color"
@@ -60,7 +68,7 @@
 									<br>
 									<p class="text-center bg-color-grey">Don't have an account
 										yet?</p>
-									<a href="#" class="text-center"><p class="font-size">SignUp</p></a>
+									<a href="customerRegistration.jsp" class="text-center"><p class="font-size">SignUp</p></a>
 								</form>
 								
 								<!-- login form ends here -->
@@ -70,7 +78,7 @@
 					<!-- column for login card ends here-->
 
 				</div>
-			<a href="changePassword.jsp"><p class="text-center">Change Your Password Here</p></a>
+			<!-- <a href="changePassword.jsp"><p class="text-center">Change Your Password Here</p></a> -->
 			</div>
 			<div class="col-md-3 col-sm"></div>
 

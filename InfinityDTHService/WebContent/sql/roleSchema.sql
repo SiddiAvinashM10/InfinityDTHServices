@@ -7,5 +7,8 @@ CREATE TABLE roleSchema
 
 insert into roleSchema values('admin@gmail.com','a');
 insert into roleSchema values('sid@gmail.com','c');
-delete from customerSchema where emailid = 'sid@gmail.com';
+delete from roleSchema where emailid = 'chenmilla.siddiavinash@gmail.com';
+
+
+select * from roleSchema;
 
