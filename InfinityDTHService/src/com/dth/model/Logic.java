@@ -54,7 +54,7 @@ public class Logic {
 				break;
 				
 			case "adminSchema":
-				return "admin.jsp";
+				return "homePage.jsp";
 				
 		}
 		return null;
@@ -84,5 +84,47 @@ public class Logic {
 		}  
 		
 		return -1;
+	}
+	
+	//Maybe we need to add 
+	public boolean createCustomer(Connection con, Customer c)
+	{
+		PreparedStatement stmt, stmt1;
+		String query = "insert into customerSchema (firstName, lastName, emailId, phoneNumber, address1, address2, landmark, zipCode, city, state, flag, pwd) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query1 = "insert into roleSchema(emailId, role) values(?, ?)";
+		try 
+		{
+			stmt1 = con.prepareStatement(query1);
+			stmt1.setString(1, c.getEmailId());
+			stmt1.setString(2, "c");
+			int rs1 = stmt1.executeUpdate();
+			
+			stmt = con.prepareStatement(query);
+			stmt.setString(1, c.getFirstname());
+			stmt.setString(2, c.getLastName());
+			stmt.setString(3, c.getEmailId());
+			stmt.setString(4, c.getPhoneNumber());
+			stmt.setString(5, c.getAddress1());
+			stmt.setString(6, c.getAddress2());
+			stmt.setString(7, c.getLandmark());
+			stmt.setInt(8, c.getZipCode());
+			stmt.setString(9, c.getCity());
+			stmt.setString(10, c.getState());
+			stmt.setInt(11, c.getFlag());
+			stmt.setString(12, c.getPwd());
+			int rs = stmt.executeUpdate();
+			
+			if(rs == 1 && rs1 == 1)
+			{
+				System.out.println("Insert Successfull");
+				return true;
+			}	
+		} 
+		catch (SQLException e) 
+		{	
+			e.printStackTrace();
+		}
+		System.out.println("Insert Failed");
+		return false;
 	}
 }

@@ -7,6 +7,23 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>You made it so far Bro.</h1>
+<%
+
+	response.setHeader("cache-control", "no-cache, no-store, must-revalidate"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+	response.setHeader("Expires", "0"); //Proxy
+	
+	if(session.getAttribute("userName") == null)
+	{
+		response.sendRedirect("login.jsp");
+	}
+%>
+
+<h1>Welcome ${userName}</h1>
+<form action="<%=request.getContextPath()%>/ControllerServlet" method="post">
+	<!-- Hidden Input  -->
+	<input type="hidden" name="option" value="logout"/>
+	<input type="submit" value="logout">
+</form>
 </body>
 </html>

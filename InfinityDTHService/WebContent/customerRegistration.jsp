@@ -14,6 +14,35 @@
 	rel="stylesheet">
 </head>
 <body>
+
+<script type="text/javascript">
+
+  function checkForm(form)
+  {
+    if(form.emailId.value == "") {
+      alert("Error: Email Id cannot be blank!");
+      form.emailId.focus();
+      return false;
+    }
+    re = /^[a-zA-Z]+ [a-zA-Z]+$/;
+    if(!re.test(form.firstName.value)) {
+      alert("Error: firstName must contain only letters and/or spaces");
+      form.firstName.focus();
+      return false;
+    }
+    /* if(!re.test(form.lastName.value)) {
+        alert("Error: lastName must contain only letters and/or spaces");
+        form.lastName.focus();
+        return false;
+      } */
+    
+    return true;
+  }
+
+</script>
+
+
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-1 col-sm"></div>
@@ -26,59 +55,59 @@
 						<h6 class="display-4 headerfont text-center text-color login-font-size">Register with us!(Customer)</h6>
 						<div class="shadow-lg p-3 mb-5 bg-white rounded-border">
 							<div class="avatar backg-color"></div>
-
+							<p class="dpfont">Default Password: ChangePwd@123</p>
 							<div class="card-body">
 
 
 								<!-- form begins here -->
-								<form action="<%=request.getContextPath()%>/ControllerServlet" method="post">
+								<form action="<%=request.getContextPath()%>/ControllerServlet" method="post" onsubmit="return checkForm(this);">
 									<div class="form-row">
 										<div class="form-group col-md-6">
-											<label for="inputFName">First Name</label> <input type="text"
-												class="form-control" id="inputFName">
+											<label for="inputFName">First Name</label> <input type="text" name="firstName"
+												class="form-control" id="inputFName" required>
 										</div>
 										<!-- Hidden Input  -->
 										<input type="hidden" name="option" value="customerRegister"/>
 										<div class="form-group col-md-6">
-											<label for="inputLName">Last Name</label> <input type="text"
-												class="form-control" id="inputLName">
+											<label for="inputLName">Last Name</label> <input type="text" name="lastName"
+												class="form-control" id="inputLName" required>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="inputEmail">Email Id</label> <input type="email"
+										<label for="inputEmail">Email Id</label> <input type="email" name="emailId"
 											class="form-control" id="inputEmail"
 											placeholder="abc@example.com">
 									</div>
 									<div class="form-group">
-										<label for="inputPhone">Phone Number</label> <input type="tel"
+										<label for="inputPhone">Phone Number</label> <input type="tel" name="phoneNumber"
 											class="form-control" id="inputPhone">
 									</div>
 									<div class="form-group">
 										<label for="inputAddress1">Address 1</label> <input
-											type="text" class="form-control" id="inputAddress1"
+											type="text" name="address1" class="form-control" id="inputAddress1"
 											placeholder="1234 Main St">
 									</div>
 									<div class="form-group">
 										<label for="inputAddress2">Address 2</label> <input
-											type="text" class="form-control" id="inputAddress2"
+											type="text" name="address2" class="form-control" id="inputAddress2"
 											placeholder="Apartment, studio, or floor">
 									</div>
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="inputLandmark">Landmark</label> <input
-												type="text" class="form-control" id="inputLandmark">
+												type="text" name="landmark" class="form-control" id="inputLandmark">
 										</div>
 
 										<div class="form-group col-md-2">
-											<label for="inputZip">Zip</label> <input type="text"
+											<label for="inputZip">Zip</label> <input type="text" name="zipCode"
 												class="form-control" id="inputZip">
 										</div>
 										<div class="form-group col-md-4">
-											<label for="inputCity">City</label> <input type="text"
+											<label for="inputCity">City</label> <input type="text" name="city"
 												class="form-control" id="inputCity">
 										</div>
 										<div class="form-group col-md-6">
-											<label for="inputState">State</label> <select id="inputState"
+											<label for="inputState">State</label> <select id="inputState" name="state"
 												class="form-control">
 												<option selected>Choose...</option>
 												<option >Alabama</option>
@@ -136,12 +165,12 @@
 										</div>
 										<div class="form-group col-md-6">
 											<label for="inputCustomerCreatioDate">Customer
-												Creation Date</label> <input type="text" class="form-control"
-												id="inputCustomerCreatioDate placeolder="dd-mm-yy">
+												Creation Date</label> <input type="text" name="cusCreation" class="form-control"
+												id="inputCustomerCreatioDate placeolder="dd-mm-yyyy">
 										</div>
 										
 									</div>
-									<button type="button"
+									<button type="submit"
 										class="btn btn-info btn-block position button-color"
 										data-toggle="button" aria-pressed="false" autocomplete="off">
 										Submit</button>
